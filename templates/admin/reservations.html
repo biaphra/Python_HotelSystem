@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Reservas{% endblock %}
+
+{% block content %}
+<div class="container fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="fas fa-calendar-check me-2"></i>Gerenciar Reservas</h2>
+        <div class="d-flex gap-2">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="fas fa-filter me-1"></i>Filtrar
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?status=pendente">Pendentes</a></li>
+                    <li><a class="dropdown-item" href="?status=confirmada">Confirmadas</a></li>
+                    <li><a class="dropdown-item" href="?status=cancelada">Canceladas</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{ url_for('admin_reservations') }}">Todas</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReservationModal">
+                <i class="fas fa-plus me-1"></i>Nova Reserva
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Quarto</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>Status</th>
+                            <th>Valor Total</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                        <tr>
+                            <td>#{{ reservation.id }}</td>
+                            <td>{{ reservation.user.name }}</td>
+                            <td>{{ reservation.room.number }} ({{ reservation.room.type }})</td>
+                            <td>{{ reservation.check_in.strftime('%d/%m/%Y') }}</td>
+                            <td>{{ reservation.check_out.strftime('%d/%m/%Y') }}</td>
+                            <td>
+                                {% if reservation.status == 'pendente' %}
+                                <span class="badge bg-warning text-dark">Pendente</span>
+                                {% elif reservation.status == 'confirmada' %}
+                                <span class="badge bg-success">Confirmada</span>
+                                {% else %}
+                                <span class="badge bg-danger">Cancelada</span>
+                                {% endif %}
+                            </td>
+                            <td>R$ {{ "%.2f"|format(reservation.total_price) }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-primary" 
+                                            onclick="editReservation({{ reservation.id }})">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    {% if reservation.status == 'pendente' %}
+                                    <button type="button" class="btn btn-sm btn-success" 
+                                            onclick="updateStatus({{ reservation.id }}, 'confirmada')">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    {% endif %}
+                                    {% if reservation.status != 'cancelada' %}
+                                    <button type="button" class="btn btn-sm btn-danger" 
+                                            onclick="updateStatus({{ reservation.id }}, 'cancelada')">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Adicionar Reserva -->
+<div class="modal fade" id="addReservationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nova Reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addReservationForm" action="{{ url_for('admin_add_reservation') }}" method="post">
+                    <div class="mb-3">
+                        <label for="user_id" class="form-label">Cliente</label>
+                        <select class="form-select" id="user_id" name="user_id" required>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="room_id" class="form-label">Quarto</label>
+                        <select class="form-select" id="room_id" name="room_id" required>
+                            {% for room in rooms %}
+                            <option value="{{ room.id }}">{{ room.number }} ({{ room.type }}) - R$ {{ "%.2f"|format(room.price) }}/noite</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="check_in" class="form-label">Check-in</label>
+                        <input type="date" class="form-control" id="check_in" name="check_in" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="check_out" class="form-label">Check-out</label>
+                        <input type="date" class="form-control" id="check_out" name="check_out" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="addReservationForm" class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Reserva -->
+<div class="modal fade" id="editReservationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Reserva</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editReservationForm" method="post">
+                    <input type="hidden" id="edit_reservation_id" name="reservation_id">
+                    <div class="mb-3">
+                        <label for="edit_user_id" class="form-label">Cliente</label>
+                        <select class="form-select" id="edit_user_id" name="user_id" required>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">{{ user.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_room_id" class="form-label">Quarto</label>
+                        <select class="form-select" id="edit_room_id" name="room_id" required>
+                            {% for room in rooms %}
+                            <option value="{{ room.id }}">{{ room.number }} ({{ room.type }}) - R$ {{ "%.2f"|format(room.price) }}/noite</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_check_in" class="form-label">Check-in</label>
+                        <input type="date" class="form-control" id="edit_check_in" name="check_in" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_check_out" class="form-label">Check-out</label>
+                        <input type="date" class="form-control" id="edit_check_out" name="check_out" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_status" class="form-label">Status</label>
+                        <select class="form-select" id="edit_status" name="status" required>
+                            <option value="pendente">Pendente</option>
+                            <option value="confirmada">Confirmada</option>
+                            <option value="cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="editReservationForm" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function editReservation(id) {
+    fetch(`/admin/reservations/${id}/get`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('edit_reservation_id').value = data.id;
+            document.getElementById('edit_user_id').value = data.user_id;
+            document.getElementById('edit_room_id').value = data.room_id;
+            document.getElementById('edit_check_in').value = data.check_in;
+            document.getElementById('edit_check_out').value = data.check_out;
+            document.getElementById('edit_status').value = data.status;
+            document.getElementById('editReservationForm').action = `/admin/reservations/${id}/edit`;
+            
+            new bootstrap.Modal(document.getElementById('editReservationModal')).show();
+        });
+}
+
+function updateStatus(id, status) {
+    const confirmMessage = status === 'cancelada' 
+        ? 'Tem certeza que deseja cancelar esta reserva?' 
+        : 'Tem certeza que deseja confirmar esta reserva?';
+    
+    if (confirm(confirmMessage)) {
+        fetch(`/admin/reservations/${id}/status/${status}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Erro ao atualizar o status da reserva');
+            }
+        });
+    }
+}
+
+// Validação de datas
+document.querySelectorAll('input[type="date"]').forEach(input => {
+    input.min = new Date().toISOString().split('T')[0];
+    
+    input.addEventListener('change', function() {
+        const form = this.closest('form');
+        const checkIn = form.querySelector('[name="check_in"]');
+        const checkOut = form.querySelector('[name="check_out"]');
+        
+        if (checkIn.value && checkOut.value) {
+            if (checkIn.value >= checkOut.value) {
+                alert('A data de check-out deve ser posterior à data de check-in');
+                this.value = '';
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

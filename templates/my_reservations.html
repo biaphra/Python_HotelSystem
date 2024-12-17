@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Reservas{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Minhas Reservas</h2>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    {% if reservations %}
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Quarto</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Status</th>
+                        <th>Data da Reserva</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                    <tr>
+                        <td>{{ reservation.room.number }}</td>
+                        <td>{{ reservation.check_in.strftime('%d/%m/%Y') }}</td>
+                        <td>{{ reservation.check_out.strftime('%d/%m/%Y') }}</td>
+                        <td>
+                            <span class="badge {% if reservation.status == 'confirmed' %}bg-success{% elif reservation.status == 'pending' %}bg-warning{% else %}bg-danger{% endif %}">
+                                {{ reservation.status }}
+                            </span>
+                        </td>
+                        <td>{{ reservation.created_at.strftime('%d/%m/%Y %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">Você ainda não possui reservas.</div>
+    {% endif %}
+    
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Fazer Nova Reserva</a>
+</div>
+{% endblock %}

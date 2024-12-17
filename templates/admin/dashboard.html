@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Painel Administrativo{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Painel Administrativo</h2>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciar Quartos</h5>
+                    <p class="card-text">Adicione, edite ou remova quartos do hotel.</p>
+                    <a href="{{ url_for('admin_rooms') }}" class="btn btn-primary">
+                        <i class="bi bi-door-open"></i> Gerenciar Quartos
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gerenciar Reservas</h5>
+                    <p class="card-text">Visualize e gerencie todas as reservas.</p>
+                    <a href="{{ url_for('admin_reservations') }}" class="btn btn-primary">
+                        <i class="bi bi-calendar-check"></i> Gerenciar Reservas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

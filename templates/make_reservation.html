@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Fazer Reserva{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Reservar Quarto {{ room.number }}</h2>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Detalhes do Quarto</h5>
+            <p class="card-text"><strong>Tipo:</strong> {{ room.type }}</p>
+            <p class="card-text"><strong>Preço:</strong> R$ {{ "%.2f"|format(room.price) }}</p>
+            <p class="card-text">{{ room.description }}</p>
+        </div>
+    </div>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label for="check_in" class="form-label">Data de Check-in</label>
+            <input type="date" class="form-control" id="check_in" name="check_in" required>
+        </div>
+        <div class="mb-3">
+            <label for="check_out" class="form-label">Data de Check-out</label>
+            <input type="date" class="form-control" id="check_out" name="check_out" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Voltar</a>
+    </form>
+</div>
+{% endblock %}

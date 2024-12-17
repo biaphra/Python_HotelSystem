@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}Gerenciar Quartos{% endblock %}
+
+{% block content %}
+<div class="container fade-in">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0"><i class="fas fa-door-closed me-2"></i>Gerenciar Quartos</h2>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addRoomModal">
+            <i class="fas fa-plus me-2"></i>Adicionar Quarto
+        </button>
+    </div>
+
+    <div class="row">
+        {% for room in rooms %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card room-card h-100">
+                {% if room.images %}
+                <div id="carousel{{ room.id }}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for image in room.images %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                            <img src="{{ url_for('static', filename='uploads/rooms/' + image.filename) }}" 
+                                 class="d-block w-100" alt="Room Image">
+                            <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
+                                    onclick="deleteImage({{ room.id }}, '{{ image.filename }}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if room.images|length > 1 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel{{ room.id }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carousel{{ room.id }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="no-image-placeholder d-flex align-items-center justify-content-center">
+                    <i class="fas fa-image fa-3x text-muted"></i>
+                </div>
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">Quarto {{ room.number }}</h5>
+                    <p class="card-text">
+                        <span class="badge bg-primary me-2">{{ room.type }}</span>
+                        <span class="badge bg-success">R$ {{ "%.2f"|format(room.price) }}</span>
+                    </p>
+                    <p class="card-text">{{ room.description }}</p>
+                    
+                    <form action="{{ url_for('upload_room_image', room_id=room.id) }}" method="post" enctype="multipart/form-data" class="mb-3">
+                        <div class="input-group">
+                            <input type="file" class="form-control form-control-sm" name="image" accept="image/*" required>
+                            <button type="submit" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-upload me-1"></i>Upload
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-primary btn-sm" onclick="editRoom({{ room.id }}, '{{ room.number }}', '{{ room.type }}', {{ room.price }}, '{{ room.description }}')">
+                            <i class="fas fa-edit me-1"></i>Editar
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteRoom({{ room.id }})">
+                            <i class="fas fa-trash me-1"></i>Excluir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Modal Adicionar Quarto -->
+<div class="modal fade" id="addRoomModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Novo Quarto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addRoomForm" action="{{ url_for('admin_rooms') }}" method="post">
+                    <div class="mb-3">
+                        <label for="number" class="form-label">Número do Quarto</label>
+                        <input type="text" class="form-control" id="number" name="number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Tipo</label>
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="Standard">Standard</option>
+                            <option value="Deluxe">Deluxe</option>
+                            <option value="Suite">Suite</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Preço por Noite (R$)</label>
+                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="addRoomForm" class="btn btn-primary">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Quarto -->
+<div class="modal fade" id="editRoomModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Quarto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editRoomForm" method="post">
+                    <input type="hidden" id="edit_room_id" name="room_id">
+                    <div class="mb-3">
+                        <label for="edit_number" class="form-label">Número do Quarto</label>
+                        <input type="text" class="form-control" id="edit_number" name="number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_type" class="form-label">Tipo</label>
+                        <select class="form-select" id="edit_type" name="type" required>
+                            <option value="Standard">Standard</option>
+                            <option value="Deluxe">Deluxe</option>
+                            <option value="Suite">Suite</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_price" class="form-label">Preço por Noite (R$)</label>
+                        <input type="number" class="form-control" id="edit_price" name="price" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_description" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" form="editRoomForm" class="btn btn-primary">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function editRoom(id, number, type, price, description) {
+    document.getElementById('edit_room_id').value = id;
+    document.getElementById('edit_number').value = number;
+    document.getElementById('edit_type').value = type;
+    document.getElementById('edit_price').value = price;
+    document.getElementById('edit_description').value = description;
+    document.getElementById('editRoomForm').action = `/admin/rooms/${id}/edit`;
+    
+    new bootstrap.Modal(document.getElementById('editRoomModal')).show();
+}
+
+function deleteRoom(id) {
+    if (confirm('Tem certeza que deseja excluir este quarto?')) {
+        fetch(`/admin/rooms/${id}/delete`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Erro ao excluir o quarto');
+            }
+        });
+    }
+}
+
+function deleteImage(roomId, filename) {
+    if (confirm('Tem certeza que deseja excluir esta imagem?')) {
+        fetch(`/admin/rooms/${roomId}/delete_image/${filename}`, {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Erro ao excluir a imagem');
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

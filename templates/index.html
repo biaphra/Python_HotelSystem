@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Hotel - Página Inicial{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Bem-vindo ao Hotel</h1>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="row">
+        {% for room in rooms %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Quarto {{ room.number }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ room.type }}</h6>
+                    <p class="card-text">{{ room.description }}</p>
+                    <p class="card-text"><strong>Preço:</strong> R$ {{ "%.2f"|format(room.price) }}</p>
+                    <a href="{{ url_for('make_reservation', room_id=room.id) }}" class="btn btn-primary">
+                        Reservar
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
