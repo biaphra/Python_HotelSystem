@@ -29,32 +29,28 @@
 
 ## 🎯 Sobre o Projeto
 
-O Sistema de Reservas de Hotel é uma solução completa para gerenciamento hoteleiro, oferecendo uma interface moderna e intuitiva tanto para clientes quanto para administradores. Desenvolvido com as melhores práticas de programação e design responsivo, o sistema proporciona uma experiência fluida em qualquer dispositivo.
+O Simples Sistema de Reservas de Hotel é uma solução básica para melhora e aprimoramento de código, oferecendo uma interface moderna e intuitiva tanto para clientes quanto para administradores. Desenvolvido com as melhores práticas de programação e design responsivo, o sistema proporciona uma experiência fluida em qualquer dispositivo.
 
 ### 💡 Principais Diferenciais
 
 - Interface moderna e intuitiva
 - Design totalmente responsivo
 - Sistema de reservas em tempo real
-- Gestão completa de quartos e reservas
-- Painel administrativo robusto
-- Relatórios detalhados
-- Upload e gestão de imagens
+- Gestão de quartos e reservas simples
+- Painel administrativo
 - Sistema de autenticação seguro
 
 ## ✨ Funcionalidades
 
 ### 👥 Área do Cliente
-- Visualização de quartos disponíveis com fotos e descrições
-- Sistema de reservas online
+- Visualização de quartos disponíveis e descrições
+- Reservas online
 - Gerenciamento de reservas pessoais
 - Histórico de estadias
-- Perfil do usuário personalizável
 
 ### 👨‍💼 Área do Administrador
-- Gerenciamento completo de quartos
+- Gerenciamento simples de quartos
   - Adicionar/Editar/Remover quartos
-  - Upload de múltiplas fotos
   - Definição de preços e tipos
 - Controle de reservas
   - Visualização de todas as reservas
@@ -63,7 +59,6 @@ O Sistema de Reservas de Hotel é uma solução completa para gerenciamento hote
 - Dashboard administrativo
   - Estatísticas de ocupação
   - Relatórios de reservas
-  - Gestão de usuários
 
 ## 🛠 Tecnologias Utilizadas
 
