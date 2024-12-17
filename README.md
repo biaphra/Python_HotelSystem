@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="static/img/banner.png" alt="Hotel Reservation System" width="100%">
+  <img src="static/img/banner.png" alt="Hotel Reservation System" width="80%">
   
   # 🏨 Sistema de Reservas de Hotel
   
@@ -8,12 +8,7 @@
   [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.1-purple.svg)](https://getbootstrap.com/)
   [![License](https://img.shields.io/badge/License-MIT-red.svg)](LICENSE)
   [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-
-  <h3>Um sistema moderno e responsivo para gerenciamento de reservas hoteleiras</h3>
-
-  [Demonstração](https://seu-site.com) | [Documentação](docs/README.md) | [Reportar Bug](https://github.com/seu-usuario/sistema-reservas-hotel/issues) | [Solicitar Feature](https://github.com/seu-usuario/sistema-reservas-hotel/issues)
-
-  <img src="static/img/preview.gif" alt="Preview do Sistema" width="80%">
+  
 </div>
 
 ---
@@ -100,7 +95,7 @@ O Sistema de Reservas de Hotel é uma solução completa para gerenciamento hote
 
 1. Clone o repositório
 ```bash
-git clone https://github.com/seu-usuario/sistema-reservas-hotel.git
+git clone https://github.com/biaphra/sistema-reservas-hotel.git
 cd sistema-reservas-hotel
 ```
 
@@ -195,7 +190,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Autores
 
-- **Seu Nome** - *Trabalho inicial* - [SeuUsuario](https://github.com/SeuUsuario)
+- **Biaphra Araujo** - *Trabalho inicial* - [SeuUsuario](https://github.com/biaphra)
 
 ## 🙏 Agradecimentos
 
@@ -204,4 +199,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - Todos os contribuidores que participaram deste projeto
 
 ---
-⌨️ com ❤️ por [Seu Nome](https://github.com/SeuUsuario) 😊
+⌨️ By: [Seu Nome](https://github.com/biaphra) 😊
