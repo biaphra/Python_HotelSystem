@@ -1,6 +1,51 @@
-# 🏨 Sistema de Reservas de Hotel
+<div align="center">
+  <img src="static/img/banner.png" alt="Hotel Reservation System" width="100%">
+  
+  # 🏨 Sistema de Reservas de Hotel
+  
+  [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org)
+  [![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
+  [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.1-purple.svg)](https://getbootstrap.com/)
+  [![License](https://img.shields.io/badge/License-MIT-red.svg)](LICENSE)
+  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-Um sistema web moderno e responsivo para gerenciamento de reservas de hotel, desenvolvido com Flask e SQLAlchemy.
+  <h3>Um sistema moderno e responsivo para gerenciamento de reservas hoteleiras</h3>
+
+  [Demonstração](https://seu-site.com) | [Documentação](docs/README.md) | [Reportar Bug](https://github.com/seu-usuario/sistema-reservas-hotel/issues) | [Solicitar Feature](https://github.com/seu-usuario/sistema-reservas-hotel/issues)
+
+  <img src="static/img/preview.gif" alt="Preview do Sistema" width="80%">
+</div>
+
+---
+
+## 📋 Sumário
+
+- [Sobre o Projeto](#-sobre-o-projeto)
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias](#-tecnologias-utilizadas)
+- [Começando](#-começando)
+- [Instalação](#-instalação)
+- [Configuração](#-configuração)
+- [Uso](#-uso)
+- [Roadmap](#-roadmap)
+- [Contribuindo](#-contribuindo)
+- [Licença](#-licença)
+- [Contato](#-contato)
+
+## 🎯 Sobre o Projeto
+
+O Sistema de Reservas de Hotel é uma solução completa para gerenciamento hoteleiro, oferecendo uma interface moderna e intuitiva tanto para clientes quanto para administradores. Desenvolvido com as melhores práticas de programação e design responsivo, o sistema proporciona uma experiência fluida em qualquer dispositivo.
+
+### 💡 Principais Diferenciais
+
+- Interface moderna e intuitiva
+- Design totalmente responsivo
+- Sistema de reservas em tempo real
+- Gestão completa de quartos e reservas
+- Painel administrativo robusto
+- Relatórios detalhados
+- Upload e gestão de imagens
+- Sistema de autenticação seguro
 
 ## ✨ Funcionalidades
 
@@ -55,7 +100,7 @@ Um sistema web moderno e responsivo para gerenciamento de reservas de hotel, des
 
 1. Clone o repositório
 ```bash
-git clone https://github.com/biaphra/Python_HotelSystem.git
+git clone https://github.com/seu-usuario/sistema-reservas-hotel.git
 cd sistema-reservas-hotel
 ```
 
@@ -150,7 +195,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Autores
 
-- **Biaphra Araujo** - *Trabalho inicial* - [@biaphra](https://github.com/biaphra/Python_HotelSystem)
+- **Seu Nome** - *Trabalho inicial* - [SeuUsuario](https://github.com/SeuUsuario)
 
 ## 🙏 Agradecimentos
 
@@ -159,4 +204,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - Todos os contribuidores que participaram deste projeto
 
 ---
-⌨️ By: [@biaphra](https://github.com/biaphra/Python_HotelSystem)
+⌨️ com ❤️ por [Seu Nome](https://github.com/SeuUsuario) 😊
