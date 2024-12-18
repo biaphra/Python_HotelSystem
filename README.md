@@ -185,7 +185,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 
 ## 👥 Autores
 
-- **Biaphra Araujo** - *Trabalho inicial* - [SeuUsuario](https://github.com/biaphra)
+- **Biaphra Araujo** - *Trabalho inicial* - [@biaphra](https://github.com/biaphra)
 
 ## 🙏 Agradecimentos
 
@@ -194,4 +194,4 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para ma
 - Todos os contribuidores que participaram deste projeto
 
 ---
-⌨️ By: [Seu Nome](https://github.com/biaphra) 😊
+⌨️ By: [@biaphra](https://github.com/biaphra)
